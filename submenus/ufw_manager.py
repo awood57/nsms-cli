@@ -88,7 +88,7 @@ def main_menu():
             subprocess.run(['bash', TOOL_DIR, 'show_logs'])
             input(f"{YELLOW}Press Enter to continue...{NC}")
         elif choice == "8":
-            log_message("Exiting tcpdump_monitor CLI", "INFO")
+            log_message("Exiting ufw_manager CLI", "INFO")
             break
         else:
             print(f"{RED}Invalid choice. Please select a valid option.{NC}")
