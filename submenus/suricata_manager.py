@@ -2,9 +2,7 @@
 
 import os
 import subprocess
-import sys
 import time
-import shutil
 
 # Colour codes
 CYAN = "\033[0;36m"

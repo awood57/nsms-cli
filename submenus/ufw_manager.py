@@ -2,8 +2,7 @@
 
 import os
 import subprocess
-import re
-import sys
+import time
 
 # Colour Codes
 CYAN = "\033[0;36m"
@@ -19,13 +18,21 @@ TOOL_DIR = os.path.join(CORE_DIR, "ufw_tools.sh")
 STATUS_PATH = os.path.join(CORE_DIR, "tool_status.sh")
 LOGGER_PATH = os.path.join(CORE_DIR, "logger.sh")
 
+
+def log_message(message, level):
+    subprocess.run(["bash", LOGGER_PATH, "log_message", message, level])
+
+
 # Check SESSION_ID
 SESSION_ID = os.getenv("SESSION_ID")
 STANDALONE = False
 if not SESSION_ID:
     STANDALONE = True
 else:
-    log_message(f"ufw_manager started with existing session ID: {SESSION_ID}", "INFO")
+    log_message(
+            f"ufw_manager started with existing session ID: {SESSION_ID}",
+            "INFO"
+            )
 
 
 def run_command(command):
@@ -36,10 +43,6 @@ def run_command(command):
         return output
     except subprocess.CalledProcessError as e:
         return e.output
-
-
-def log_message(message, level):
-    subprocess.run(["bash", LOGGER_PATH, "log_message", message, level])
 
 
 def log_session_start():
