@@ -6,12 +6,12 @@ import re
 import sys
 
 # Colour Codes
-CYAN = '\033[0;36m'
-BLUE = '\033[0;34m'
-YELLOW = '\033[1;33m'
-GREEN = '\033[0;32m'
-RED = '\033[0;31m'
-NC = '\033[0m'
+CYAN = "\033[0;36m"
+BLUE = "\033[0;34m"
+YELLOW = "\033[1;33m"
+GREEN = "\033[0;32m"
+RED = "\033[0;31m"
+NC = "\033[0m"
 
 # Tool directories
 CORE_DIR = os.path.join(os.path.dirname(__file__), "../../nsms-core/")
@@ -27,29 +27,33 @@ if not SESSION_ID:
 else:
     log_message(f"ufw_manager started with existing session ID: {SESSION_ID}", "INFO")
 
+
 def run_command(command):
     try:
-        output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True, text=True)
+        output = subprocess.check_output(
+            command, stderr=subprocess.STDOUT, shell=True, text=True
+        )
         return output
     except subprocess.CalledProcessError as e:
         return e.output
 
+
 def log_message(message, level):
-    subprocess.run(['bash', LOGGER_PATH, "log_message", message, level])
+    subprocess.run(["bash", LOGGER_PATH, "log_message", message, level])
+
 
 def log_session_start():
-    subprocess.run(['bash', LOGGER_PATH, "log_session_start"])
+    subprocess.run(["bash", LOGGER_PATH, "log_session_start"])
+
 
 def main_menu():
     while True:
-        colour_map = {
-                "ONLINE": GREEN,
-                "OFFLINE": RED,
-                "NOT INSTALLED": YELLOW
-            }
+        colour_map = {"ONLINE": GREEN, "OFFLINE": RED, "NOT INSTALLED": YELLOW}
 
-        ufw_tool = subprocess.run(['bash', STATUS_PATH, 'ufw'], capture_output=True, text=True)
-        ufw_status = ufw_tool.stdout.strip();
+        ufw_tool = subprocess.run(
+            ["bash", STATUS_PATH, "ufw"], capture_output=True, text=True
+        )
+        ufw_status = ufw_tool.stdout.strip()
         ufw_colour = colour_map.get(ufw_status, NC)
 
         os.system("clear")
@@ -59,33 +63,35 @@ def main_menu():
         print(f" Firewall Status: {ufw_colour}{ufw_status}{NC}")
         print("═══════════════════════════════════════════")
 
-        print(f"""{YELLOW}1) Toggle Firewall
+        print(
+            f"""{YELLOW}1) Toggle Firewall
 2) View Current Rules
 3) Add a new rule
 4) Delete a rule
 5) Edit rules manually
 6) Reset firewall
 7) Show logs
-8) Exit{NC}""")
+8) Exit{NC}"""
+        )
         choice = input("Enter your choice [1-8]: ")
 
         log_message(f"User selected menu option: {choice}", "INFO")
 
         if choice == "1":
-            subprocess.run(['bash', TOOL_DIR, 'toggle_firewall'])
+            subprocess.run(["bash", TOOL_DIR, "toggle_firewall"])
         elif choice == "2":
-            subprocess.run(['bash', TOOL_DIR, 'view_rules'])
+            subprocess.run(["bash", TOOL_DIR, "view_rules"])
             input(f"{YELLOW}Press Enter to continue...{NC}")
         elif choice == "3":
-            subprocess.run(['bash', TOOL_DIR, 'add_new_rule'])
+            subprocess.run(["bash", TOOL_DIR, "add_new_rule"])
         elif choice == "4":
-            subprocess.run(['bash', TOOL_DIR, 'delete_rule'])
+            subprocess.run(["bash", TOOL_DIR, "delete_rule"])
         elif choice == "5":
-            subprocess.run(['bash', TOOL_DIR, 'edit_rules'])
+            subprocess.run(["bash", TOOL_DIR, "edit_rules"])
         elif choice == "6":
-            subprocess.run(['bash', TOOL_DIR, 'reset_firewall'])
+            subprocess.run(["bash", TOOL_DIR, "reset_firewall"])
         elif choice == "7":
-            subprocess.run(['bash', TOOL_DIR, 'show_logs'])
+            subprocess.run(["bash", TOOL_DIR, "show_logs"])
             input(f"{YELLOW}Press Enter to continue...{NC}")
         elif choice == "8":
             log_message("Exiting ufw_manager CLI", "INFO")
@@ -93,6 +99,7 @@ def main_menu():
         else:
             print(f"{RED}Invalid choice. Please select a valid option.{NC}")
             time.sleep(1)
+
 
 if __name__ == "__main__":
     main_menu()

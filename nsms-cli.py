@@ -8,12 +8,12 @@ import getpass
 import shutil
 
 # Colour codes for terminal output
-CYAN = '\033[0;36m'
-BLUE = '\033[0;34m'
-YELLOW = '\033[1;33m'
-GREEN = '\033[0;32m'
-RED = '\033[0;31m'
-NC = '\033[0m'
+CYAN = "\033[0;36m"
+BLUE = "\033[0;34m"
+YELLOW = "\033[1;33m"
+GREEN = "\033[0;32m"
+RED = "\033[0;31m"
+NC = "\033[0m"
 
 
 # Directories/Tool Paths
@@ -23,15 +23,21 @@ BIN_DIR = os.path.join(os.path.dirname(__file__), "submenus")
 LOGGER_PATH = os.path.join(CORE_DIR, "logger.sh")
 STATUS_PATH = os.path.join(CORE_DIR, "tool_status.sh")
 
+
 def log_message(message, level):
-    subprocess.run(['bash', LOGGER_PATH, "log_message", message, level])
+    subprocess.run(["bash", LOGGER_PATH, "log_message", message, level])
+
 
 def log_session_start():
-    result = subprocess.run(['bash', LOGGER_PATH, "log_session_start"], capture_output = True, text = True)
+    result = subprocess.run(
+        ["bash", LOGGER_PATH, "log_session_start"], capture_output=True, text=True
+    )
     return result.stdout.strip()
 
+
 def log_session_end(session_id):
-    subprocess.run(['bash', LOGGER_PATH, "log_session_end"])
+    subprocess.run(["bash", LOGGER_PATH, "log_session_end"])
+
 
 # Root check
 def check_privileges(session_id):
@@ -43,6 +49,7 @@ def check_privileges(session_id):
         sys.exit(1)
     log_message("Root privilege check passed", "INFO")
 
+
 # Validate script path
 def validate_script(script_path):
     if not os.path.isfile(script_path):
@@ -52,19 +59,25 @@ def validate_script(script_path):
         return False
     return True
 
+
 # Tool runner
 def run_tool(script_name, session_id):
     script_path = os.path.join(BIN_DIR, script_name)
     if validate_script(script_path):
         os.chmod(script_path, 0o755)
-        result = subprocess.call([script_path], env=dict(os.environ, SESSION_ID=session_id))
+        result = subprocess.call(
+            [script_path], env=dict(os.environ, SESSION_ID=session_id)
+        )
         if result == 0:
             log_message(f"Tool {script_name} completed successfully", "INFO")
         else:
-            log_message(f"Tool {script_name} failed with return code: {result}", "ERROR")
+            log_message(
+                f"Tool {script_name} failed with return code: {result}", "ERROR"
+            )
             input(f"{YELLOW}Press Enter to continue...{NC}")
         return result
     return 1
+
 
 # System information display
 def show_system_info():
@@ -90,34 +103,33 @@ def show_system_info():
 
     input(f"\n{YELLOW}Press Enter to continue...{NC}")
 
+
 # Cleanup
 def cleanup(session_id):
     log_message("Main CLI interface exiting", "INFO")
     log_session_end(session_id)
 
+
 def main():
     session_id = log_session_start()
     check_privileges(session_id)
 
-
     try:
         while True:
-            colour_map = {
-                "ONLINE": GREEN,
-                "OFFLINE": RED,
-                "NOT INSTALLED": YELLOW
-            }
+            colour_map = {"ONLINE": GREEN, "OFFLINE": RED, "NOT INSTALLED": YELLOW}
 
             tools = [
                 ("Firewall (UFW)", "ufw"),
                 ("Intrusion Detection (Suricata)", "suricata"),
-                ("Brute Force Protection (Fail2Ban)", "fail2ban")
+                ("Brute Force Protection (Fail2Ban)", "fail2ban"),
             ]
 
             tool_status_lines = []
 
             for label, command in tools:
-                result = subprocess.run(['bash', STATUS_PATH, command], capture_output=True, text=True)
+                result = subprocess.run(
+                    ["bash", STATUS_PATH, command], capture_output=True, text=True
+                )
                 status = result.stdout.strip()
                 colour = colour_map.get(status, NC)
                 tool_status_lines.append(f" • {label:<35} {colour}{status}{NC}")
@@ -130,7 +142,6 @@ def main():
                 for line in tool_status_lines:
                     print(line)
                 print("══════════════════════════════════════════════════════")
-
 
             print(f"{YELLOW}1) Packet Sniffing and Analysis (tcpdump){NC}")
             print(f"{YELLOW}2) Intrusion Detection System Management (Suricata){NC}")
@@ -165,6 +176,7 @@ def main():
                 time.sleep(2)
     finally:
         cleanup(session_id)
+
 
 if __name__ == "__main__":
     main()
