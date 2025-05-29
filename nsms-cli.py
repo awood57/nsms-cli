@@ -28,9 +28,7 @@ def log_message(message, level):
 
 def log_session_start():
     result = subprocess.run(
-        ["bash", LOGGER_PATH, "log_session_start"],
-        capture_output=True,
-        text=True
+        ["bash", LOGGER_PATH, "log_session_start"], capture_output=True, text=True
     )
     return result.stdout.strip()
 
@@ -42,10 +40,7 @@ def log_session_end(session_id):
 # Root check
 def check_privileges(session_id):
     if os.geteuid() != 0:
-        log_message(
-                "Script execution attempted without root privileges",
-                "ERROR"
-                )
+        log_message("Script execution attempted without root privileges", "ERROR")
         print(f"{RED}Error: This script requires root privileges.{NC}")
         print(f"{YELLOW}Please run with sudo.{NC}")
         log_session_end(session_id)
@@ -75,8 +70,7 @@ def run_tool(script_name, session_id):
             log_message(f"Tool {script_name} completed successfully", "INFO")
         else:
             log_message(
-                f"Tool {script_name} failed with return code: {result}",
-                "ERROR"
+                f"Tool {script_name} failed with return code: {result}", "ERROR"
             )
             input(f"{YELLOW}Press Enter to continue...{NC}")
         return result
@@ -120,11 +114,7 @@ def main():
 
     try:
         while True:
-            colour_map = {
-                    "ONLINE": GREEN,
-                    "OFFLINE": RED,
-                    "NOT INSTALLED": YELLOW
-                    }
+            colour_map = {"ONLINE": GREEN, "OFFLINE": RED, "NOT INSTALLED": YELLOW}
 
             tools = [
                 ("Firewall (UFW)", "ufw"),
@@ -136,15 +126,11 @@ def main():
 
             for label, command in tools:
                 result = subprocess.run(
-                    ["bash", STATUS_PATH, command],
-                    capture_output=True,
-                    text=True
+                    ["bash", STATUS_PATH, command], capture_output=True, text=True
                 )
                 status = result.stdout.strip()
                 colour = colour_map.get(status, NC)
-                tool_status_lines.append(
-                        f" • {label:<35} {colour}{status}{NC}"
-                        )
+                tool_status_lines.append(f" • {label:<35} {colour}{status}{NC}")
 
                 os.system("clear")
                 print("══════════════════════════════════════════════════════")
@@ -156,9 +142,7 @@ def main():
                 print("══════════════════════════════════════════════════════")
 
             print(f"{YELLOW}1) Packet Sniffing and Analysis (tcpdump){NC}")
-            print(
-                    f"{YELLOW}2) Intrusion Detection Management (Suricata){NC}"
-                    )
+            print(f"{YELLOW}2) Intrusion Detection Management (Suricata){NC}")
             print(f"{YELLOW}3) Firewall Management (ufw){NC}")
             print(f"{YELLOW}4) Intrusion Prevention (fail2ban){NC}")
             print(f"{YELLOW}5) Network Connection Monitoring{NC}")
@@ -185,10 +169,7 @@ def main():
                 print(f"{GREEN}Exiting Network Security Interface{NC}")
                 break
             else:
-                log_message(
-                        f"Invalid menu choice entered: {choice}",
-                        "WARNING"
-                        )
+                log_message(f"Invalid menu choice entered: {choice}", "WARNING")
                 print(f"{RED}Invalid choice, please try again.{NC}")
                 time.sleep(2)
     finally:

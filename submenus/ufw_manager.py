@@ -29,10 +29,7 @@ STANDALONE = False
 if not SESSION_ID:
     STANDALONE = True
 else:
-    log_message(
-            f"ufw_manager started with existing session ID: {SESSION_ID}",
-            "INFO"
-            )
+    log_message(f"ufw_manager started with existing session ID: {SESSION_ID}", "INFO")
 
 
 def run_command(command):
