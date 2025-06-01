@@ -34,9 +34,7 @@ else:
 
 def run_command(command):
     try:
-        output = subprocess.check_output(
-            command, stderr=subprocess.STDOUT, text=True
-        )
+        output = subprocess.check_output(command, stderr=subprocess.STDOUT, text=True)
         return output
     except subprocess.CalledProcessError as e:
         return e.output

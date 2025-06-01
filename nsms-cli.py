@@ -53,7 +53,7 @@ def validate_script(script_path):
     if not os.path.isfile(script_path):
         log_message(f"Required script not found: {script_path}", "ERROR")
         print(f"{RED}Required script not found: {script_path}{NC}")
-        input(f"\n{YELLOW}Press Enter to continue...{NC}") # nosec B322
+        input(f"\n{YELLOW}Press Enter to continue...{NC}")  # nosec B322
         return False
     return True
 
@@ -72,7 +72,7 @@ def run_tool(script_name, session_id):
             log_message(
                 f"Tool {script_name} failed with return code: {result}", "ERROR"
             )
-            input(f"{YELLOW}Press Enter to continue...{NC}") # nosec B322
+            input(f"{YELLOW}Press Enter to continue...{NC}")  # nosec B322
         return result
     return 1
 
