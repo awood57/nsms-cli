@@ -53,7 +53,7 @@ def validate_script(script_path):
     if not os.path.isfile(script_path):
         log_message(f"Required script not found: {script_path}", "ERROR")
         print(f"{RED}Required script not found: {script_path}{NC}")
-        input(f"\n{YELLOW}Press Enter to continue...{NC}")
+        input(f"\n{YELLOW}Press Enter to continue...{NC}") # nosec B322
         return False
     return True
 
@@ -62,7 +62,7 @@ def validate_script(script_path):
 def run_tool(script_name, session_id):
     script_path = os.path.join(BIN_DIR, script_name)
     if validate_script(script_path):
-        os.chmod(script_path, 0o755)
+        os.chmod(script_path, 0o700)
         result = subprocess.call(
             [script_path], env=dict(os.environ, SESSION_ID=session_id)
         )
@@ -72,7 +72,7 @@ def run_tool(script_name, session_id):
             log_message(
                 f"Tool {script_name} failed with return code: {result}", "ERROR"
             )
-            input(f"{YELLOW}Press Enter to continue...{NC}")
+            input(f"{YELLOW}Press Enter to continue...{NC}") # nosec B322
         return result
     return 1
 
@@ -99,7 +99,7 @@ def show_system_info():
     print(f"\n{BLUE}Listening Ports:{NC}")
     subprocess.call("ss -tuln", shell=True)
 
-    input(f"\n{YELLOW}Press Enter to continue...{NC}")
+    input(f"\n{YELLOW}Press Enter to continue...{NC}")  # nosec B322
 
 
 # Cleanup
@@ -149,7 +149,7 @@ def main():
             print(f"{YELLOW}6) System information{NC}")
             print(f"{YELLOW}7) Exit{NC}\n")
 
-            choice = input("Enter your choice [1-7]: ").strip()
+            choice = input("Enter your choice [1-7]: ").strip()  # nosec B322
             log_message(f"Menu option selected: {choice}", "INFO")
 
             if choice == "1":

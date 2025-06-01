@@ -35,7 +35,7 @@ else:
 def run_command(command):
     try:
         output = subprocess.check_output(
-            command, stderr=subprocess.STDOUT, shell=True, text=True
+            command, stderr=subprocess.STDOUT, text=True
         )
         return output
     except subprocess.CalledProcessError as e:
@@ -73,7 +73,7 @@ def main_menu():
 7) Show logs
 8) Exit{NC}"""
         )
-        choice = input("Enter your choice [1-8]: ")
+        choice = input("Enter your choice [1-8]: ")  # nosec B322
 
         log_message(f"User selected menu option: {choice}", "INFO")
 
@@ -81,7 +81,7 @@ def main_menu():
             subprocess.run(["bash", TOOL_DIR, "toggle_firewall"])
         elif choice == "2":
             subprocess.run(["bash", TOOL_DIR, "view_rules"])
-            input(f"{YELLOW}Press Enter to continue...{NC}")
+            input(f"{YELLOW}Press Enter to continue...{NC}")  # nosec B322
         elif choice == "3":
             subprocess.run(["bash", TOOL_DIR, "add_new_rule"])
         elif choice == "4":
@@ -92,7 +92,7 @@ def main_menu():
             subprocess.run(["bash", TOOL_DIR, "reset_firewall"])
         elif choice == "7":
             subprocess.run(["bash", TOOL_DIR, "show_logs"])
-            input(f"{YELLOW}Press Enter to continue...{NC}")
+            input(f"{YELLOW}Press Enter to continue...{NC}")  # nosec B322
         elif choice == "8":
             log_message("Exiting ufw_manager CLI", "INFO")
             break
