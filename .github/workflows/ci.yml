@@ -11,10 +11,12 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install dependencies
-        run: pip install --upgrade pip flake8 black bandit
+        run: pip install --upgrade pip flake8 black bandit pytest pexpect
       - name: Run black
         run: black --check .
       - name: Run flake8
         run: flake8 .
       - name: Run bandit
         run: bandit -r . -ll
+      - name: Run pytest
+        run: pytest tests/test.py
