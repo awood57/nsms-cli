@@ -19,4 +19,4 @@ jobs:
       - name: Run bandit
         run: bandit -r . -ll
       - name: Run pytest
-        run: pytest tests/test.py
+        run: sudo pytest tests/test.py
