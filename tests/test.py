@@ -1,5 +1,6 @@
 import pexpect
 
+
 def test_menu():
     child = pexpect.spawn("python3 nsms-cli.py")
     # Tcpdump
