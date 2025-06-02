@@ -19,4 +19,4 @@ jobs:
       - name: Run bandit
         run: bandit -r . -ll
       - name: Run pytest
-        run: sudo pytest tests/test.py
+        run: sudo env "PATH=$PATH" pytest tests/test.py
