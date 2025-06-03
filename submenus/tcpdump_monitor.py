@@ -46,17 +46,19 @@ def main_menu():
 4) Show tcpdump help
 5) Exit{NC}"""
         )
-        choice = input("Enter your choice [1-4]: ")
+        choice = input("Enter your choice [1-4]: ")  # nosec B322
 
         log_message(f"User selected menu option: {choice}")
 
         if choice == "1":
             subprocess.run(["bash", TOOL_DIR, "list_interfaces"])
-            input(f"{YELLOW}Press Enter to continue...{NC}")
+            input(f"{YELLOW}Press Enter to continue...{NC}")  # nosec B322
         elif choice == "2":
             subprocess.run(["bash", TOOL_DIR, "live_capture"])
+            input(f"{YELLOW}Press Enter to continue...{NC}")  # nosec B322
         elif choice == "3":
             subprocess.run(["bash", TOOL_DIR, "live_pcap_capture"])
+            input(f"{YELLOW}Press Enter to continue...{NC}")  # nosec B322
         elif choice == "4":
             subprocess.run(["bash", TOOL_DIR, "show_tcpdump_help"])
         elif choice == "5":
